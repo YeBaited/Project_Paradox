@@ -39,7 +39,7 @@ int renderTotal = 0;          // For debugging
 std::string debugInputData;
 std::string debugLog = "unk";
 std::string playerName = "Gian Santos";
-std::string eraName = "Marcos Era";
+std::string eraName = "Unknown";
 std::string currentDialogue = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?";
 
 
@@ -48,8 +48,6 @@ std::vector<std::string> currentEventChoice = {
   "[B] BbBbB",
   "[C] CcCcC"
 };
-
-
 
 class libDialogue {
   private:
@@ -63,7 +61,7 @@ class libDialogue {
       .choiceStabilityCost = {100}
     };
 
-    eventParadox currentEventData;
+    eventParadox currentEventData; // storing event so it's easier to access
 
     eventParadox getEvent(){ // This get the eventParadox struct
       eventParadox targetEvent;
@@ -127,10 +125,10 @@ class libDialogue {
       
     };
 
-
 };
 
 
+libDialogue paradoxClass;
 auto screen = ftxui::App::Fullscreen(); // screenshit size
 
 InputOption inputOpt = {
@@ -150,19 +148,23 @@ InputOption inputOpt = {
 };
 
 Component debugInput = Input(&debugInputData, "Debug command", inputOpt);
-
 Component playerNameInput = Input(&playerName, "Your name...");
-Component beginButton = Button("Start the adventure!", screen.ExitLoopClosure());
+Component beginButton = Button("Start the adventure!", []{
+  showCharacterCreation = false;
+  currentTab = 1;
+
+  Maybe(beginButton, &showCharacterCreation);
+  Maybe(playerNameInput, &showCharacterCreation);
+});
 
 Component choices = Menu(&currentEventChoice, &choiceSelected, MenuOption{
   .on_enter = []{
-    libDialogue dialogue;
     debugLog = "choiSelected: " + std::to_string(choiceSelected) + " curSceneSelected: " + std::to_string(currentEventScene);
     
-    dialogue.updatePlayer(); // Update player first since some variable will probably change after changing the dialogue.
+    paradoxClass.updatePlayer(); // Update player first since some variable will probably change after changing the paradoxClass.
 
-    dialogue.setEventSceneToSelected();
-    dialogue.updateDialogue();
+    paradoxClass.setEventSceneToSelected();
+    paradoxClass.updateDialogue();
     
     // need to scan for all event and check event id btw
     // currentDialogue = eventScenes[currentEventScene].eventDialogue;
@@ -208,7 +210,7 @@ auto dialogueMain = Renderer([]{ // Dialogue
   return vbox({
     hbox({
       window(text("Name"), text(playerName)),
-      window(text("Current-Era"), text("")),
+      window(text("Current-Era"), text(eraNameList[currentEra])),
       window(text("Stability"), text(std::to_string(currentStability) + "%"))
     }) | border,
     vbox({
@@ -238,7 +240,6 @@ auto uiTabs = Container::Tab({
 }, &currentTab);
 
 auto mainRender = Renderer(componentList, []{ // btw this renders every frame.
-
   renderTotal += 1;
   return vbox({
     topBar->Render(),
