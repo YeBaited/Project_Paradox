@@ -16,7 +16,7 @@ eventParadox scene1_1 = {
 
 eventParadox scene1_2 = {
     .eventId = 4,
-    .eventEra = 0,
+    .eventEra = 4,
     .eventName = "Bro",
     .eventDialogue = "Welp, you fucking ended the game. Congrats dumbass.",
     .eventChoices = {"[A] Go back to the starting area."},

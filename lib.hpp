@@ -23,17 +23,18 @@ struct eventParadox{
 };
 
 std::vector<eventParadox> eventScenes = {}; // Stores all the scenes
+std::string eraNameList[5] = {"Stone Age", "Medieval Period", "World War 2", "Modern Era", "Paradox"};
 
 bool showDebug = true;
 bool showCharacterCreation = true;
 
-int choiceSelected = 0;
-int currentTab = 0; // 0 Is menu | 1 is dialogue
-int maxStability = 100;
-int currentStability = 100;
-int currentEventScene = 0;
-int currentEra = 0;
-int renderTotal = 0;
+int choiceSelected = 0;       // This is for the choices
+int currentTab = 0;           // 0 Is menu | 1 is dialogue
+int maxStability = 100;       // Max bro
+int currentStability = 100;   // Player Stability, if it reaches 0 you lose.
+int currentEventScene = 0;    // Just scene id
+int currentEra = 0;           // Holds the current era
+int renderTotal = 0;          // For debugging
 
 std::string debugInputData;
 std::string debugLog = "unk";
@@ -41,11 +42,14 @@ std::string playerName = "Gian Santos";
 std::string eraName = "Marcos Era";
 std::string currentDialogue = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?";
 
+
 std::vector<std::string> currentEventChoice = {
   "[A] AaAaA",
   "[B] BbBbB",
   "[C] CcCcC"
 };
+
+
 
 class libDialogue {
   private:
@@ -59,7 +63,9 @@ class libDialogue {
       .choiceStabilityCost = {100}
     };
 
-    eventParadox getEvent(){
+    eventParadox currentEventData;
+
+    eventParadox getEvent(){ // This get the eventParadox struct
       eventParadox targetEvent;
       for (eventParadox e : eventScenes){
         if (e.eventId == currentEventScene){
@@ -72,6 +78,7 @@ class libDialogue {
         return defaultFailsafe;
       };
 
+      currentEventData = targetEvent;
       return targetEvent;
     };
 
@@ -104,6 +111,8 @@ class libDialogue {
       
       currentDialogue = targetEvent.eventDialogue;
       currentEventChoice = targetEvent.eventChoices;
+      currentEra = targetEvent.eventEra;
+      eraName = eraNameList[currentEra];
     };
 
     void updatePlayer(){ // This updates the player status and such
@@ -115,8 +124,10 @@ class libDialogue {
         currentStability = 100;
       };
       
-      currentEra = targetEvent.eventEra;
+      
     };
+
+
 };
 
 
@@ -194,14 +205,18 @@ auto debugBar = Renderer(componentList, []{ // Debug dady
 
 auto dialogueMain = Renderer([]{ // Dialogue
 
-
   return vbox({
     hbox({
       window(text("Name"), text(playerName)),
+      window(text("Current-Era"), text("")),
       window(text("Stability"), text(std::to_string(currentStability) + "%"))
     }) | border,
-    paragraphAlignLeft(currentDialogue),
-    choices->Render(),
+    vbox({
+      center(text(eraName)) | color(Color::Red),
+      separator(),
+      paragraphAlignLeft(currentDialogue),
+      choices->Render(),
+    }) | border
   });
 });
 
