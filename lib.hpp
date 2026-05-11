@@ -1,0 +1,294 @@
+#pragma once
+
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/app.hpp>
+
+#include <ftxui/dom/elements.hpp>
+
+#include <ftxui/screen/screen.hpp>
+
+#include <iostream>
+
+// Eras
+using namespace ftxui;
+
+struct eventParadox{
+    int eventId;
+    int eventEra;
+    std::string eventName;
+    std::string eventDialogue;
+    std::vector<std::string> eventChoices;
+    std::vector<int> choiceSceneId;
+    std::vector<int> choiceStabilityCost;
+};
+
+std::vector<eventParadox> eventScenes = {}; // Stores all the scenes
+
+bool showDebug = true;
+bool showCharacterCreation = true;
+
+int choiceSelected = 0;
+int currentTab = 0; // 0 Is menu | 1 is dialogue
+int maxStability = 100;
+int currentStability = 100;
+int currentEventScene = 0;
+int currentEra = 0;
+int renderTotal = 0;
+
+std::string debugInputData;
+std::string debugLog = "unk";
+std::string playerName = "Gian Santos";
+std::string eraName = "Marcos Era";
+std::string currentDialogue = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?";
+
+std::vector<std::string> currentEventChoice = {
+  "[A] AaAaA",
+  "[B] BbBbB",
+  "[C] CcCcC"
+};
+
+class libDialogue {
+  private:
+    eventParadox defaultFailsafe = {
+      .eventId = -1,
+      .eventEra = 0,
+      .eventName = "unknown Event.",
+      .eventDialogue = "an unknown event probably caused this, actions taken will going back to even -1.",
+      .eventChoices = {"Understood."},
+      .choiceSceneId = {0},
+      .choiceStabilityCost = {100}
+    };
+
+    eventParadox getEvent(){
+      eventParadox targetEvent;
+      for (eventParadox e : eventScenes){
+        if (e.eventId == currentEventScene){
+          targetEvent = e;
+          break;
+        };
+      }
+
+      if (targetEvent.eventId != currentEventScene){ // ensure that it's the correct one
+        return defaultFailsafe;
+      };
+
+      return targetEvent;
+    };
+
+    bool isValidEvent(int idTarget){
+      for (eventParadox e : eventScenes){
+        if (e.eventId == idTarget){
+          return true;
+          break;
+        };
+      }
+      return false;
+    };
+
+  public:
+    void setEventSceneToSelected(){ // Set the scene to the selected next scene
+      int newSceneEvent = 0;
+      if (isValidEvent(eventScenes[currentEventScene].choiceSceneId[choiceSelected])){
+        newSceneEvent = eventScenes[currentEventScene].choiceSceneId[choiceSelected];
+      } else {
+        debugLog = "Is a Invalid scene Id!";
+      };
+
+      currentEventScene = newSceneEvent;
+      return;
+    };
+
+    void updateDialogue(){ // just update the dialogue and stuff
+      
+      eventParadox targetEvent = getEvent();
+      
+      currentDialogue = targetEvent.eventDialogue;
+      currentEventChoice = targetEvent.eventChoices;
+    };
+
+    void updatePlayer(){ // This updates the player status and such
+      eventParadox targetEvent = getEvent();
+
+      currentStability += targetEvent.choiceStabilityCost[choiceSelected];
+
+      if (currentStability > maxStability){
+        currentStability = 100;
+      };
+      
+      currentEra = targetEvent.eventEra;
+    };
+};
+
+
+auto screen = ftxui::App::Fullscreen(); // screenshit size
+
+InputOption inputOpt = {
+  .multiline = false,
+  .on_change = []{
+    if (debugInputData == "tab 0"){
+      currentTab = 0;
+      debugInputData = "";
+    };
+
+    if (debugInputData == "tab 1"){
+      currentTab = 1;
+      debugInputData = "";
+    };
+
+  }
+};
+
+Component debugInput = Input(&debugInputData, "Debug command", inputOpt);
+
+Component playerNameInput = Input(&playerName, "Your name...");
+Component beginButton = Button("Start the adventure!", screen.ExitLoopClosure());
+
+Component choices = Menu(&currentEventChoice, &choiceSelected, MenuOption{
+  .on_enter = []{
+    libDialogue dialogue;
+    debugLog = "choiSelected: " + std::to_string(choiceSelected) + " curSceneSelected: " + std::to_string(currentEventScene);
+    
+    dialogue.updatePlayer(); // Update player first since some variable will probably change after changing the dialogue.
+
+    dialogue.setEventSceneToSelected();
+    dialogue.updateDialogue();
+    
+    // need to scan for all event and check event id btw
+    // currentDialogue = eventScenes[currentEventScene].eventDialogue;
+    // currentEventChoice = eventScenes[currentEventScene].ChoiceReplies;
+    
+  }
+});
+
+
+auto componentList = Container::Vertical({
+  debugInput,
+  playerNameInput,
+  beginButton,
+  choices,
+});
+
+auto topBar = Renderer([]{ // TopBar ig
+  return hbox({
+    center(text("Project Paradox")) | border | color(Color::Purple3) | flex,
+    window(text("Version"), text("0.0.1"))
+  });
+});
+
+auto debugBar = Renderer(componentList, []{ // Debug dady
+  if (not showDebug){
+    return text("");
+  };
+
+  return vbox({
+    hbox({
+      center(text("[DEBUG MODE]")) | flex,
+      window(text("Command"), debugInput->Render()) | flex,
+      window(text("curChoi"), text(std::to_string(choiceSelected))),
+      window(text("curTab"), text(std::to_string(currentTab))),
+      window(text("curRender"), text(std::to_string(renderTotal))),
+      window(text("curLog"), text(debugLog))
+    }) | borderDashed,
+  });
+});
+
+auto dialogueMain = Renderer([]{ // Dialogue
+
+
+  return vbox({
+    hbox({
+      window(text("Name"), text(playerName)),
+      window(text("Stability"), text(std::to_string(currentStability) + "%"))
+    }) | border,
+    paragraphAlignLeft(currentDialogue),
+    choices->Render(),
+  });
+});
+
+
+
+auto menuMain = Renderer(componentList, []{ // Menu
+  return vbox({
+    paragraphAlignCenter("Welcome to Project Paradox... \n To begin please input your name \n and press 'Begin'") | border,
+    hbox({
+      window(text("Character Name"), playerNameInput->Render())
+    }),
+    center(beginButton->Render())
+  }) | border;
+});
+
+auto uiTabs = Container::Tab({
+  menuMain,
+  dialogueMain
+}, &currentTab);
+
+auto mainRender = Renderer(componentList, []{ // btw this renders every frame.
+
+  renderTotal += 1;
+  return vbox({
+    topBar->Render(),
+    debugBar->Render(),
+    uiTabs->Render()
+  });
+});
+
+
+
+namespace libParadox{
+  
+  void setEra(std::string eraName){
+    eraName = eraName;
+  };
+
+  void popEvent(std::string eventName, std::string dialogueText, std::vector<std::string> choices, std::function<void(int)> callback){ // legacy 
+    currentEventChoice.clear();
+    currentTab = 1;
+
+    currentDialogue = dialogueText;
+    currentEventChoice = choices;
+    
+  };
+
+  void addEvent(eventParadox paradoxScene){
+    eventScenes.push_back(paradoxScene);
+  };
+
+
+  void addAsync(std::function<void(void)> asyncMain){
+    screen.Post([&](){
+      asyncMain();
+    });
+
+  };
+
+  void debugChangeTab(int tabArg){
+    std::cout << "TabArg is: " << tabArg << std::endl;
+    std::cout << "prev Tab Value: " << currentTab << std::endl;
+    
+    currentTab = tabArg;
+    screen.PostEvent(Event::Custom);
+    std::cout << "current Tab Value: " << currentTab << std::endl;
+  }
+
+  void debugGetEvents(){
+    std ::cout << std::endl << "==> debug_getEvents <==" << std::endl;
+    for (eventParadox event : eventScenes){
+      std::cout << event.eventName << std::endl;
+    };
+  };
+
+  void begin(){
+    currentEventChoice = eventScenes[0].eventChoices;
+    currentDialogue = eventScenes[0].eventDialogue;
+
+    screen.Post([&](){
+      renderTotal += 1;
+    });
+    screen.Loop(mainRender);
+
+  };
+
+  void stop(){
+    screen.ExitLoopClosure();
+  };
+};
