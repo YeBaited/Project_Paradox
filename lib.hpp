@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <fstream>
+
 // Eras
 using namespace ftxui;
 
@@ -46,7 +47,6 @@ std::string currentDialogue = "Sed ut perspiciatis unde omnis iste natus error s
 
 std::vector<int> eventIdLog = {};
 std::vector<int> eventChoiceLog = {};
-
 std::vector<std::string> currentEventChoice = {
   "[A] AaAaA",
   "[B] BbBbB",
@@ -95,6 +95,24 @@ class libDialogue {
       return false;
     };
 
+    void encryptText( ){
+      int forgivenessAmount = 6;
+      int encryptionAmount = (maxStability - currentStability) / forgivenessAmount;
+      int currentIteration = 0;
+      
+      while (currentIteration < encryptionAmount){
+        char replacements[7] = {'?', '#', '*', '@', '%', '!', '&'};
+
+        srand(time(0) * renderTotal + currentIteration);
+        int currentRandom = rand() % currentDialogue.size() + 1;
+        int typeOfReplacement = rand() % 7;
+        
+        currentDialogue[currentRandom] = replacements[typeOfReplacement];
+        currentIteration += 1;
+      };
+      
+    };
+
   public:
     void setEventSceneToSelected(){ // Set the scene to the selected next scene
       eventParadox targetEvent = getEvent();
@@ -108,7 +126,6 @@ class libDialogue {
       };
 
       currentEventScene = newSceneEvent;
-      return;
     };
 
     void updateDialogue(){ // just update the dialogue and stuff
@@ -119,6 +136,8 @@ class libDialogue {
       currentEventChoice = targetEvent.eventChoices;
       currentEra = targetEvent.eventEra;
       eraName = eraNameList[currentEra];
+
+      encryptText();
     };
 
     void updatePlayer(){ // This updates the player status and such
@@ -174,7 +193,10 @@ InputOption inputOpt = {
 };
 
 Component debugInput = Input(&debugInputData, "Debug command", inputOpt);
-Component playerNameInput = Input(&playerName, "Your name...");
+Component playerNameInput = Input(&playerName, "Your name...", InputOption{
+  .multiline = false,
+});
+
 Component beginButton = Button("Start the adventure!", []{
 
   showCharacterCreation = false;
