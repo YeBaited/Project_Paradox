@@ -8,7 +8,7 @@
 #include <ftxui/screen/screen.hpp>
 
 #include <iostream>
-
+#include <fstream>
 // Eras
 using namespace ftxui;
 
@@ -285,6 +285,8 @@ namespace libParadox{
   };
 
   void popEvent(std::string eventName, std::string dialogueText, std::vector<std::string> choices, std::function<void(int)> callback){ // legacy 
+    // please remove
+    
     currentEventChoice.clear();
     currentTab = 1;
 
@@ -329,6 +331,15 @@ namespace libParadox{
       renderTotal += 1;
     });
     screen.Loop(mainRender);
+
+  };
+
+  void save(){ // boilerplate shit
+    std::ofstream file("titi.txt", std::ios::app);
+    if (file.is_open()){
+      file << "test" << " " << "test2" << std::endl;
+      file.close();
+    }; 
 
   };
 

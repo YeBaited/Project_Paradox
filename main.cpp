@@ -6,6 +6,7 @@
 int mainClock = 0;
 
 bool failsafe = false;
+bool skipFailsafe = false;
 
 int main(){
     std::vector<int> sceneIdCache = {}; // this stores all the sceneId, mainly used for detecting duplicate.
@@ -60,10 +61,11 @@ int main(){
 
     libParadox::debugGetEvents();
 
-    if (not failsafe){
+    if (not failsafe || not skipFailsafe){
         libParadox::begin();
     };
     
+    std::cout << "game ended" << std::endl;
     // libParadox::popEvent("wow", "crazyIk", std::vector<std::string>{"wtf", "dsadas", "dsada"}, [](int chosen){
     //     std::cout << "callback received! with chosen: " << chosen;
     // });
