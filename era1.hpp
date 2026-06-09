@@ -4,18 +4,6 @@
 #include <vector>
 #include "lib.hpp"
 
-eventParadox a0 = {
-  .eventId = 0,
-  .eventEra = 1,
-  .eventName = "A new beginning?",
-  .eventDialogue = "Start naba",
-  .eventChoices = {"[A] sge"},
-  .choiceSceneId = {101},
-  .choiceStabilityCost = {0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
-};
-
 eventParadox a1 = {
   .eventId = 101,
   .eventEra = 1,
@@ -48,8 +36,8 @@ eventParadox a3 = {
   .eventChoices = {"[A] Hide!", "[B] Take the weapon", "[C] Talk to them"},
   .choiceSceneId = {126, 104, 105},
   .choiceStabilityCost = {-2, -5, -20},
-  .RequirementSceneId = {0, 0},
-  .RequirementSceneChoice = {0, 0}
+  .RequirementSceneId = {0, 0, 0},
+  .RequirementSceneChoice = {0, 0, 0}
 };
 
 eventParadox a4 = {
@@ -71,9 +59,9 @@ eventParadox a5 = {
   .eventDialogue = "You hid behind the huge rock. And as they were returning from their hunt to take a rest, you were suddenly given an opportunity to run without them noticing you." ,
   .eventChoices = {"[A] Escape", "[B] Talk to them"},
   .choiceSceneId = {106, 105},
-  .choiceStabilityCost = {0,0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
+  .choiceStabilityCost = {0, 0},
+  .RequirementSceneId = {0, 0},
+  .RequirementSceneChoice = {0, 0}
 };
 
 eventParadox a6 = {
@@ -120,8 +108,8 @@ eventParadox a9 = {
   .eventChoices = {"[A] This is the end."},
   .choiceSceneId = {0},
   .choiceStabilityCost = {-200},
-  .RequirementSceneId = {0, 0},
-  .RequirementSceneChoice = {0, 0}
+  .RequirementSceneId = {0},
+  .RequirementSceneChoice = {0}
 };
 
 eventParadox a10 = {
@@ -142,7 +130,7 @@ eventParadox a11 = {
   .eventName = "The great escape?",
   .eventDialogue = "You managed to escape from the cave, now that you’re outside all you can see are sands, you’re in a Desert." ,
   .eventChoices = {"[A] Explore."},
-  .choiceSceneId = {111},
+  .choiceSceneId = {112},
   .choiceStabilityCost = {0},
   .RequirementSceneId = {0},
   .RequirementSceneChoice = {0}
@@ -152,12 +140,12 @@ eventParadox a12 = {
   .eventId = 112,
   .eventEra = 1,
   .eventName = "What!?",
-  .eventDialogue = "As you were walking in the discord, you stumbled upon a weird device, almost like it wasn’t made for this era." ,
+  .eventDialogue = "As you were walking in the desert, you stumbled upon a weird device, almost like it wasn’t made for this era." ,
   .eventChoices = {"[A] Investigate further.", "[B] Play with the device."},
   .choiceSceneId = {113, 123},
-  .choiceStabilityCost = {0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
+  .choiceStabilityCost = {0, 0},
+  .RequirementSceneId = {0, 0},
+  .RequirementSceneChoice = {0, 0}
 };
 
 eventParadox a13 = {
@@ -167,9 +155,9 @@ eventParadox a13 = {
   .eventDialogue = "Beep!" ,
   .eventChoices = {"[A] Investigate the device", "[B] Keep playing with it."},
   .choiceSceneId = {113, 124},
-  .choiceStabilityCost = {0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
+  .choiceStabilityCost = {0, 0},
+  .RequirementSceneId = {0, 0},
+  .RequirementSceneChoice = {0, 0}
 };
 
 eventParadox a14 = {
@@ -179,9 +167,9 @@ eventParadox a14 = {
   .eventDialogue = "As you investigate the the weird device you noticed some weird inscryption on it’s screen, you then noticed it burst in to life. And begun, slowly getting louder and louder." ,
   .eventChoices = {"[A] Run", "[B] Wait for something to happen."},
   .choiceSceneId = {114, 115},
-  .choiceStabilityCost = {0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
+  .choiceStabilityCost = {0, 0},
+  .RequirementSceneId = {0, 0},
+  .RequirementSceneChoice = {0, 0}
 };
 
 eventParadox a15 = {
@@ -203,9 +191,9 @@ eventParadox a16 = {
   .eventDialogue = "Boop!" ,
   .eventChoices = {"[A] Investigate the device", "[B] Keep playing with it."},
   .choiceSceneId = {113, 123},
-  .choiceStabilityCost = {0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
+  .choiceStabilityCost = {0, 0},
+  .RequirementSceneId = {0, 0},
+  .RequirementSceneChoice = {0, 0}
 };
 
 eventParadox a17 = {
@@ -251,9 +239,9 @@ eventParadox a20 = {
   .eventDialogue = "The unknown ship flew pass you, seemingly like it’s trying to identify you, after plenty of passes around you. It has begin to land." ,
   .eventChoices = {"[A] RUN!", "[B} Just wait."},
   .choiceSceneId = {118, 119},
-  .choiceStabilityCost = {0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
+  .choiceStabilityCost = {0, 0},
+  .RequirementSceneId = {0, 0},
+  .RequirementSceneChoice = {0, 0}
 };
 
 eventParadox a21 = {
@@ -263,9 +251,9 @@ eventParadox a21 = {
   .eventDialogue = "As the ship door, fully opened, heavily armed man then exited the ship. one of them is holding a tablet of some kind, and the armed man begun searching the area." ,
   .eventChoices = {"[A] Quietly escape.", "[B] Keep watching."},
   .choiceSceneId = {127, 121},
-  .choiceStabilityCost = {0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
+  .choiceStabilityCost = {0, 0},
+  .RequirementSceneId = {0, 0},
+  .RequirementSceneChoice = {0, 0}
 };
 
 eventParadox a22 = {
@@ -275,9 +263,9 @@ eventParadox a22 = {
   .eventDialogue = "You tried running away, and every step you take, you get closer and closer to ship. It seems like you’re being dragged by the unknown ships tractor beam." ,
   .eventChoices = {"[A] Keep running", "[B} Stop running."},
   .choiceSceneId = {118, 119},
-  .choiceStabilityCost = {0},
-  .RequirementSceneId = {0},
-  .RequirementSceneChoice = {0}
+  .choiceStabilityCost = {0, 0},
+  .RequirementSceneId = {0, 0},
+  .RequirementSceneChoice = {0, 0}
 };
 
 eventParadox a23 = {
@@ -298,7 +286,7 @@ eventParadox a24 = {
   .eventName = "Damn.",
   .eventDialogue = "As you quietly try to escape the scene, you accidently stumbled at one of the rocks beneath the sand, the man who was holding the tablet quickly looked at his tablet, as you feel like it has detected something, your presence, as you continue trying to escape the scene, the armed man begin closing in at your position." ,
   .eventChoices = {"[A] Quick! Run!"},
-  .choiceSceneId = {0},
+  .choiceSceneId = {129},
   .choiceStabilityCost = {0},
   .RequirementSceneId = {0},
   .RequirementSceneChoice = {0}
@@ -309,8 +297,8 @@ eventParadox a25 = {
   .eventEra = 1,
   .eventName = "Damn.",
   .eventDialogue = "As you continue to watch, the man holding the tablet begun searching the area, and managed to locate the device that you so unknowingly activated." ,
-  .eventChoices = {"[A] Quietly escape.", "[B] Keep watching."},
-  .choiceSceneId = {0},
+  .eventChoices = {"[A] Quick run!"},
+  .choiceSceneId = {129},
   .choiceStabilityCost = {0},
   .RequirementSceneId = {0},
   .RequirementSceneChoice = {0}
@@ -322,7 +310,7 @@ eventParadox a26 = {
   .eventName = "Never a snitch",
   .eventDialogue = "As you stay quiet while being interrogated, the man a tablet then ordered the man to take you in the ship." ,
   .eventChoices = {"[A] ..."},
-  .choiceSceneId = {0},
+  .choiceSceneId = {129},
   .choiceStabilityCost = {0},
   .RequirementSceneId = {0},
   .RequirementSceneChoice = {0}
@@ -334,14 +322,74 @@ eventParadox a27 = {
   .eventName = "What a snitch.",
   .eventDialogue = "As you told them all of the truth on how you got in to your situation, the guy holding the tablet, ordered his man to take you in to the ship." ,
   .eventChoices = {"[A] ..."},
-  .choiceSceneId = {0},
+  .choiceSceneId = {129},
   .choiceStabilityCost = {0},
   .RequirementSceneId = {0},
   .RequirementSceneChoice = {0}
 };
 
+eventParadox a28 = {
+  .eventId = 129,
+  .eventEra = 1,
+  .eventName = "Containment",
+  .eventDialogue =
+  "The armed personnel force you into the vessel. "
+  "The doors seal shut behind you. "
+  "The room is sterile. White. Familiar. "
+  "Panels covered in symbols begin lighting around you. "
+  "One soldier looks toward the tablet and quietly says: "
+  "'Temporal contamination confirmed.'",
+  .eventChoices = {
+  "[A] Stay silent.",
+  "[B] Demand answers."
+  },
+  .choiceSceneId = {130,130},
+  .choiceStabilityCost = {0,5},
+  .RequirementSceneId = {0,0},
+  .RequirementSceneChoice = {0,0}
+};
+
+eventParadox a29 = {
+.eventId = 130,
+.eventEra = 1,
+.eventName = "Chronal Failure",
+.eventDialogue =
+"Warning lights flood the chamber red. "
+"The symbols around the walls begin shifting rapidly. "
+"A distorted voice echoes through the ship. "
+"'Chronal signature mismatch.' "
+"'Operator anomaly detected.' "
+"'Emergency displacement initiated.' "
+"The vessel violently shakes as reality itself begins tearing apart.",
+.eventChoices = {
+"[A] Grab onto the chamber wall.",
+"[B] Close your eyes."
+},
+.choiceSceneId = {131,131},
+.choiceStabilityCost = {-5,0},
+.RequirementSceneId = {0,0},
+.RequirementSceneChoice = {0,0}
+};
+
+eventParadox a30 = {
+.eventId = 131,
+.eventEra = 1,
+.eventName = "Temporal Ejection",
+.eventDialogue =
+"The floor disappears beneath you. "
+"For a moment, you see countless moments layered together. "
+"Caves. Cities. Stars. Forests. "
+"The ship vanishes. "
+"Cold air slams into your face as your body crashes through snow-covered branches. "
+"You are somewhere else. Somewhen else.",
+.eventChoices = {
+"[A] Stand up."
+},
+.choiceSceneId = {0},
+.choiceStabilityCost = {0},
+.RequirementSceneId = {0},
+.RequirementSceneChoice = {0}
+};
 
 
-
-
-std::vector<eventParadox> era1Events = {a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27};
+std::vector<eventParadox> era1Events = {a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30};

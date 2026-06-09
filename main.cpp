@@ -2,18 +2,16 @@
 
 #include "lib.hpp"
 #include "era1.hpp"
-
-int mainClock = 0;
+#include "era0.hpp"
 
 bool failsafe = false;
 bool skipFailsafe = false;
 
-int main(){
-    std::vector<int> sceneIdCache = {}; // this stores all the sceneId, mainly used for detecting duplicate.
-    std::vector<int> sceneChoicesCache = {}; // store all sceneIdChoices, mainly used for detecting if a sceneIdChoice leads to nowhere.
+std::vector<int> sceneIdCache = {}; // this stores all the sceneId, mainly used for detecting duplicate.
+std::vector<int> sceneChoicesCache = {}; // store all sceneIdChoices, mainly used for detecting if a sceneIdChoice leads to nowhere.
 
-    for (eventParadox event : era1Events){ // gets each one of the eventParadox
-        
+void verify(std::vector<eventParadox> eraArray){
+    for (eventParadox event : eraArray){ // gets each one of the eventParadox
         for (int sceneId : sceneIdCache){
             if (sceneId == event.eventId){
                 std::cout << sceneId << " <- Duplicate!" << std::endl;
@@ -24,25 +22,33 @@ int main(){
         if (event.choiceSceneId.size() != event.choiceStabilityCost.size()){
             std::cout << event.eventId << " <- size of choiceSceneId("<< event.choiceSceneId.size() <<") does not match choiceStabilityCost("<< event.choiceStabilityCost.size() <<")!" << std::endl;
             failsafe = true;
-        }
+        };
 
         if (event.choiceSceneId.size() != event.RequirementSceneId.size()){
             std::cout << event.eventId << " <- size of choiceSceneId("<< event.choiceSceneId.size() <<") does not match RequirementSceneId("<< event.RequirementSceneId.size() <<")!" << std::endl;
             failsafe = true;
-        }
+        };
 
         if (event.choiceSceneId.size() != event.RequirementSceneChoice .size()){
             std::cout << event.eventId << " <- size of choiceSceneId("<< event.choiceSceneId.size() <<") does not match RequirementSceneChoice("<< event.RequirementSceneChoice.size() <<")!" << std::endl;
             failsafe = true;
-        }
+        };
 
         for (int choiceSceneId : event.choiceSceneId){
             sceneChoicesCache.emplace_back(choiceSceneId);
         };
 
         sceneIdCache.emplace_back(event.eventId); // add it to the cache.
+        std::cout << "Adding sceneId " << event.eventId << " to cache!" << std::endl;
         libParadox::addEvent(event);
     };
+};
+
+int main(){
+
+    verify(era0Events);
+    verify(era1Events);
+    
 
     for (int choiceSceneId : sceneChoicesCache){ // checks if a choiceSceneId leads to nowhere
         bool checkIfGoodToGo = false;
@@ -61,7 +67,9 @@ int main(){
 
     libParadox::debugGetEvents();
 
-    if (not failsafe || not skipFailsafe){
+    std::cout << "Failsafe: " << failsafe << " SkipFailSafe: " << skipFailsafe << std::endl;
+
+    if (not failsafe || skipFailsafe){
         libParadox::begin();
     };
     

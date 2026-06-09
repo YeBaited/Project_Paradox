@@ -28,7 +28,7 @@ struct eventParadox{
 std::vector<eventParadox> eventScenes = {}; // Stores all the scenes
 std::string eraNameList[5] = {"Stone Age", "Medieval Period", "World War 2", "Modern Era", "Paradox"};
 
-bool showDebug = true;
+bool showDebug = false;
 bool showCharacterCreation = true;
 
 int choiceSelected = 0;       // This is for the choices
@@ -96,7 +96,7 @@ class libDialogue {
     };
 
     void encryptText( ){
-      int forgivenessAmount = 6;
+      int forgivenessAmount = 20;
       int encryptionAmount = (maxStability - currentStability) / forgivenessAmount;
       int currentIteration = 0;
       
@@ -151,6 +151,10 @@ class libDialogue {
       if (currentStability > maxStability){
         currentStability = 100;
       };      
+
+      if (currentStability < 0){
+        currentStability = 0;
+      };
     };
 
     void resetEverything(){
