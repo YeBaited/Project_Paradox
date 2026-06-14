@@ -10,7 +10,7 @@ FetchContent_Declare(ftxui
  
 FetchContent_MakeAvailable(ftxui)
  
-add_executable(main main.cpp lib.hpp era1.hpp era0.hpp)
+add_executable(main main.cpp lib.hpp era4.hpp era3.hpp era2.hpp era1.hpp era0.hpp)
 target_link_libraries(main
   PRIVATE ftxui::screen
   PRIVATE ftxui::dom

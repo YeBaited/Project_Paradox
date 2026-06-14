@@ -1,8 +1,12 @@
 #include <iostream>
 
 #include "lib.hpp"
-#include "era1.hpp"
+
 #include "era0.hpp"
+#include "era1.hpp"
+#include "era2.hpp"
+#include "era3.hpp"
+#include "era4.hpp"
 
 bool failsafe = false;
 bool skipFailsafe = false;
@@ -27,7 +31,7 @@ void verify(std::vector<eventParadox> eraArray){
         if (event.choiceSceneId.size() != event.RequirementSceneId.size()){
             std::cout << event.eventId << " <- size of choiceSceneId("<< event.choiceSceneId.size() <<") does not match RequirementSceneId("<< event.RequirementSceneId.size() <<")!" << std::endl;
             failsafe = true;
-        };
+        }; 
 
         if (event.choiceSceneId.size() != event.RequirementSceneChoice .size()){
             std::cout << event.eventId << " <- size of choiceSceneId("<< event.choiceSceneId.size() <<") does not match RequirementSceneChoice("<< event.RequirementSceneChoice.size() <<")!" << std::endl;
@@ -48,6 +52,9 @@ int main(){
 
     verify(era0Events);
     verify(era1Events);
+    verify(era2Events);
+    verify(era3Events);
+    verify(era4Events);
     
 
     for (int choiceSceneId : sceneChoicesCache){ // checks if a choiceSceneId leads to nowhere
@@ -68,10 +75,12 @@ int main(){
     libParadox::debugGetEvents();
 
     std::cout << "Failsafe: " << failsafe << " SkipFailSafe: " << skipFailsafe << std::endl;
+    std::cout << ">> STATISTICS << " << std::endl << "total events: " << sceneIdCache.size() << std::endl << "total choices: " << sceneIdCache.size() << std::endl;
 
     if (not failsafe || skipFailsafe){
         libParadox::begin();
     };
+    
     
     std::cout << "game ended" << std::endl;
     // libParadox::popEvent("wow", "crazyIk", std::vector<std::string>{"wtf", "dsadas", "dsada"}, [](int chosen){

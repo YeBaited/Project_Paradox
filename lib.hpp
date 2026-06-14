@@ -26,7 +26,7 @@ struct eventParadox{
 };
 
 std::vector<eventParadox> eventScenes = {}; // Stores all the scenes
-std::string eraNameList[5] = {"Stone Age", "Medieval Period", "World War 2", "Modern Era", "Paradox"};
+std::string eraNameList[5] = {"Point Of Singularity", "Primitive", "Medieval", "Advanced", "!?UNKNOWN?!"};
 
 bool showDebug = false;
 bool showCharacterCreation = true;
@@ -41,9 +41,11 @@ int renderTotal = 0;          // For debugging
 
 std::string debugInputData;
 std::string debugLog = "unk";
-std::string playerName = "Gian Santos";
+std::string playerName = "";
 std::string eraName = "Unknown";
+std::string currentStatus = "Breathing...";
 std::string currentDialogue = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?";
+std::string currentEventTitle = "Beginning?";
 
 std::vector<int> eventIdLog = {};
 std::vector<int> eventChoiceLog = {};
@@ -96,7 +98,7 @@ class libDialogue {
     };
 
     void encryptText( ){
-      int forgivenessAmount = 20;
+      int forgivenessAmount = 10;
       int encryptionAmount = (maxStability - currentStability) / forgivenessAmount;
       int currentIteration = 0;
       
@@ -135,6 +137,7 @@ class libDialogue {
       currentDialogue = targetEvent.eventDialogue;
       currentEventChoice = targetEvent.eventChoices;
       currentEra = targetEvent.eventEra;
+      currentEventTitle = targetEvent.eventName;
       eraName = eraNameList[currentEra];
 
       encryptText();
@@ -143,18 +146,41 @@ class libDialogue {
     void updatePlayer(){ // This updates the player status and such
       eventParadox targetEvent = getEvent();
 
-    
       currentStability += targetEvent.choiceStabilityCost[choiceSelected];
       eventIdLog.push_back(targetEvent.eventId);
       eventChoiceLog.push_back(choiceSelected);
 
       if (currentStability > maxStability){
-        currentStability = 100;
+        currentStability = maxStability;
       };      
 
       if (currentStability < 0){
         currentStability = 0;
       };
+
+      if (currentStability >= 90){
+        currentStatus = "Breathing...";
+      } else if (currentStability >= 80){
+        currentStatus = "Breathing..";
+      } else if (currentStability >= 70){
+        currentStatus = "Breathing.";
+      } else if (currentStability >= 60){
+        currentStatus = "Struggling.";
+      } else if (currentStability >= 50){
+        currentStatus = "Weakening.";
+      } else if (currentStability >= 50){
+        currentStatus = "Despair.";
+      } else if (currentStability >= 40){
+        currentStatus = "Darkness.";
+      } else if (currentStability >= 30){
+        currentStatus = "????";
+      } else if (currentStability >= 20){
+        currentStatus = "!!!!";
+      } else if (currentStability >= 10){
+        currentStatus = "####";
+      } else if (currentStability < 10){
+        currentStatus = "!!P&RAD0x?!";
+      };   
     };
 
     void resetEverything(){
@@ -170,7 +196,6 @@ class libDialogue {
     };
 
 };
-
 
 libDialogue paradoxClass;
 auto screen = ftxui::App::Fullscreen(); // screenshit size
@@ -205,6 +230,13 @@ Component beginButton = Button("Start the adventure!", []{
 
   showCharacterCreation = false;
   currentTab = 1;
+  
+  std::ofstream file("playerName.txt");
+
+  if (file.is_open()){
+    file << playerName;
+    file.close();
+  };
 
   Maybe(beginButton, &showCharacterCreation);
   Maybe(playerNameInput, &showCharacterCreation);
@@ -222,7 +254,6 @@ Component choices = Menu(&currentEventChoice, &choiceSelected, MenuOption{
     // need to scan for all event and check event id btw
     // currentDialogue = eventScenes[currentEventScene].eventDialogue;
     // currentEventChoice = eventScenes[currentEventScene].ChoiceReplies;
-    
   }
 });
 
@@ -237,7 +268,7 @@ auto componentList = Container::Vertical({
 auto topBar = Renderer([]{ // TopBar ig
   return hbox({
     center(text("Project Paradox")) | border | color(Color::Purple3) | flex,
-    window(text("Version"), text("0.0.1"))
+    window(text("Version"), text("1.0.0"))
   });
 });
 
@@ -265,10 +296,11 @@ auto dialogueMain = Renderer([]{ // Dialogue
     hbox({
       window(text("Name"), text(playerName)),
       window(text("Current-Era"), text(eraNameList[currentEra])),
-      window(text("Stability"), text(std::to_string(currentStability) + "%"))
+      window(text("Stability"), text(std::to_string(currentStability) + "%")),
+      window(text("Status"), text(currentStatus)) | color(Color::Blue),
     }) | border,
     vbox({
-      center(text(eraName)) | color(Color::Red),
+      center(text(eraName + " - " + currentEventTitle)) | color(Color::Red),
       separator(),
       paragraphAlignLeft(currentDialogue),
       choices->Render(),
@@ -280,7 +312,7 @@ auto dialogueMain = Renderer([]{ // Dialogue
 
 auto menuMain = Renderer(componentList, []{ // Menu
   return vbox({
-    paragraphAlignCenter("Welcome to Project Paradox... \n To begin please input your name \n and press 'Begin'") | border,
+    paragraphAlignCenter("Welcome to Project Paradox... \n\nTo begin please input your name \n\nand press 'Begin'") | border,
     hbox({
       window(text("Character Name"), playerNameInput->Render())
     }),
@@ -330,7 +362,6 @@ namespace libParadox{
     screen.Post([&](){
       asyncMain();
     });
-
   };
 
   void debugChangeTab(int tabArg){
@@ -350,6 +381,14 @@ namespace libParadox{
   };
 
   void begin(){
+
+    std::ifstream file("playerName.txt");
+
+    if (file.is_open()){
+      file >> playerName;
+      file.close();
+    }
+
     currentEventChoice = eventScenes[0].eventChoices;
     currentDialogue = eventScenes[0].eventDialogue;
 
@@ -360,14 +399,6 @@ namespace libParadox{
 
   };
 
-  void save(){ // boilerplate shit
-    std::ofstream file("titi.txt", std::ios::app);
-    if (file.is_open()){
-      file << "test" << " " << "test2" << std::endl;
-      file.close();
-    }; 
-
-  };
 
   void stop(){
     screen.ExitLoopClosure();

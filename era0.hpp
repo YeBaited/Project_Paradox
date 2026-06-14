@@ -7,8 +7,8 @@
 eventParadox aa0 = {
   .eventId = 0,
   .eventEra = 0,
-  .eventName = "The White Room",
-  .eventDialogue = "Welcome! you can play the game by moving your arrow keys and pressing enter to your desire choices, goodluck! \n rules: \n if your stability goes down it will be harder to read the text, so watch out.",
+  .eventName = "The beginning? Again?",
+  .eventDialogue = "Welcome! you can play the game by moving your arrow keys and pressing enter to your desire choices, goodluck! \nrules: \nif your stability goes down it will be harder to read the text, so watch out.",
   .eventChoices = {
   "[A] Begin.",
   "[A] Start.",
@@ -19,7 +19,6 @@ eventParadox aa0 = {
   .RequirementSceneId = {0,0,0},
   .RequirementSceneChoice = {0,0,0}
 };
-
 
 eventParadox aa1 = {
   .eventId = 1,
@@ -144,12 +143,11 @@ eventParadox aa7 = {
   "Mission mandatory.",
   .eventChoices = {
   "[A] Continue.",
-  ""
   },
-  .choiceSceneId = {20,0},
-  .choiceStabilityCost = {-10,0},
-  .RequirementSceneId = {0,0},
-  .RequirementSceneChoice = {0,0}
+  .choiceSceneId = {20},
+  .choiceStabilityCost = {-10},
+  .RequirementSceneId = {0},
+  .RequirementSceneChoice = {0}
 };
 
 eventParadox aa8 = {
@@ -270,12 +268,11 @@ eventParadox aa15 = {
   "Preparing temporal insertion.",
   .eventChoices = {
   "[A] Proceed.",
-  ""
   },
-  .choiceSceneId = {20,0},
-  .choiceStabilityCost = {0,0},
-  .RequirementSceneId = {0,0},
-  .RequirementSceneChoice = {0,0}
+  .choiceSceneId = {20},
+  .choiceStabilityCost = {0},
+  .RequirementSceneId = {0},
+  .RequirementSceneChoice = {0}
 };
 
 eventParadox aa16 = {
@@ -341,12 +338,11 @@ eventParadox aa19 = {
 "The symbols are identical to those from the void.",
 .eventChoices = {
 "[A] Continue.",
-""
 },
-.choiceSceneId = {20,0},
-.choiceStabilityCost = {-5,0},
-.RequirementSceneId = {0,0},
-.RequirementSceneChoice = {0,0}
+.choiceSceneId = {20},
+.choiceStabilityCost = {-5},
+.RequirementSceneId = {0},
+.RequirementSceneChoice = {0}
 };
 
 eventParadox aa20 = {
@@ -359,12 +355,11 @@ eventParadox aa20 = {
 "Your story ends here.",
 .eventChoices = {
 "[A] End.",
-""
 },
-.choiceSceneId = {0,0},
-.choiceStabilityCost = {-200,0},
-.RequirementSceneId = {0,0},
-.RequirementSceneChoice = {0,0}
+.choiceSceneId = {0},
+.choiceStabilityCost = {-200},
+.RequirementSceneId = {0},
+.RequirementSceneChoice = {0}
 };
 
 eventParadox aa21 = {

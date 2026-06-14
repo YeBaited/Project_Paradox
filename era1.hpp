@@ -8,7 +8,7 @@ eventParadox a1 = {
   .eventId = 101,
   .eventEra = 1,
   .eventName = "A new beginning?",
-  .eventDialogue = "You suddenly, teleported to cave. The cave is massive, while you were inspecting the cave, you begun to see writings on the walls, writings you couldn’t understand." ,
+  .eventDialogue = "You suddenly were teleported to a cave. The cave is massive, while you were inspecting the cave, you begun to see writings on the walls, writings you couldn’t understand." ,
   .eventChoices = {"[A] Analyze the writings.", "[B] Keep moving forward."},
   .choiceSceneId = {125, 103},
   .choiceStabilityCost = {-10, -10},
@@ -350,45 +350,45 @@ eventParadox a28 = {
 };
 
 eventParadox a29 = {
-.eventId = 130,
-.eventEra = 1,
-.eventName = "Chronal Failure",
-.eventDialogue =
-"Warning lights flood the chamber red. "
-"The symbols around the walls begin shifting rapidly. "
-"A distorted voice echoes through the ship. "
-"'Chronal signature mismatch.' "
-"'Operator anomaly detected.' "
-"'Emergency displacement initiated.' "
-"The vessel violently shakes as reality itself begins tearing apart.",
-.eventChoices = {
-"[A] Grab onto the chamber wall.",
-"[B] Close your eyes."
-},
-.choiceSceneId = {131,131},
-.choiceStabilityCost = {-5,0},
-.RequirementSceneId = {0,0},
-.RequirementSceneChoice = {0,0}
+  .eventId = 130,
+  .eventEra = 1,
+  .eventName = "Chronal Failure",
+  .eventDialogue =
+  "Warning lights flood the chamber red. "
+  "The symbols around the walls begin shifting rapidly. "
+  "A distorted voice echoes through the ship. "
+  "'Chronal signature mismatch.' "
+  "'Operator anomaly detected.' "
+  "'Emergency displacement initiated.' "
+  "The vessel violently shakes as reality itself begins tearing apart.",
+  .eventChoices = {
+  "[A] Grab onto the chamber wall.",
+  "[B] Close your eyes."
+  },
+  .choiceSceneId = {131,131},
+  .choiceStabilityCost = {-5,0},
+  .RequirementSceneId = {0,0},
+  .RequirementSceneChoice = {0,0}
 };
 
 eventParadox a30 = {
-.eventId = 131,
-.eventEra = 1,
-.eventName = "Temporal Ejection",
-.eventDialogue =
-"The floor disappears beneath you. "
-"For a moment, you see countless moments layered together. "
-"Caves. Cities. Stars. Forests. "
-"The ship vanishes. "
-"Cold air slams into your face as your body crashes through snow-covered branches. "
-"You are somewhere else. Somewhen else.",
-.eventChoices = {
-"[A] Stand up."
-},
-.choiceSceneId = {0},
-.choiceStabilityCost = {0},
-.RequirementSceneId = {0},
-.RequirementSceneChoice = {0}
+  .eventId = 131,
+  .eventEra = 1,
+  .eventName = "Temporal Ejection",
+  .eventDialogue =
+  "The floor disappears beneath you. "
+  "For a moment, you see countless moments layered together. "
+  "Caves. Cities. Stars. Forests. "
+  "The ship vanishes. "
+  "Cold air slams into your face as your body crashes through snow-covered branches. "
+  "You are somewhere else. Somewhen else.",
+  .eventChoices = {
+  "[A] Stand up."
+  },
+  .choiceSceneId = {201},
+  .choiceStabilityCost = {0},
+  .RequirementSceneId = {0},
+  .RequirementSceneChoice = {0}
 };
 
 
